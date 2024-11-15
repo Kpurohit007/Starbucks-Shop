@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Order - Starbucks Coffee Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #3e2723;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .order-container {
+            background-color: white;
+            margin: 30px auto;
+            padding: 30px;
+            width: 60%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-selection {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .product-selection label {
+            font-size: 18px;
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .product-selection select, .product-selection input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .order-summary {
+            background-color: #fafafa;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-summary h3 {
+            margin-top: 0;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            background-color: #3e2723;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #5d4037;
+        }
+
+        .footer {
+            background-color: #3e2723;
+            color: white;
+            padding: 10px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Starbucks Coffee Shop - Order</h1>
+
+    <div class="order-container">
+        <form action="{% url 'order_view' %}" method="POST">
+            {% csrf_token %}
+            
+            <!-- Product Selection -->
+            <div class="product-selection">
+                <label for="product">Select a Coffee</label>
+                <select id="product" name="product" required>
+                    {% for product in products %}
+                        <option value="{{ product.id }}">{{ product.name }} - ${{ product.price }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+                <label for="size">Size</label>
+                <select id="size" name="size" required>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                </select>
+            </div>
+
+            <!-- Customer Details -->
+            <div class="product-selection">
+                <label for="customer_name">Your Name</label>
+                <input type="text" id="customer_name" name="customer_name" required>
+
+                <label for="customer_email">Email</label>
+                <input type="email" id="customer_email" name="customer_email" required>
+
+                <label for="customer_address">Address</label>
+                <input type="text" id="customer_address" name="customer_address" required>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <p>Selected Coffee: <span id="coffee_name">N/A</span></p>
+                <p>Quantity: <span id="coffee_quantity">0</span></p>
+                <p>Size: <span id="coffee_size">N/A</span></p>
+                <p>Total Price: $<span id="total_price">0.00</span></p>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="button-container">
+                <button type="submit">Submit Order</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Starbucks Coffee Shop</p>
+    </div>
+
+    <script>
+        // JavaScript to calculate the order total and update the order summary dynamically
+        const productSelect = document.getElementById('product');
+        const quantityInput = document.getElementById('quantity');
+        const sizeSelect = document.getElementById('size');
+        const coffeeNameSpan = document.getElementById('coffee_name');
+        const coffeeQuantitySpan = document.getElementById('coffee_quantity');
+        const coffeeSizeSpan = document.getElementById('coffee_size');
+        const totalPriceSpan = document.getElementById('total_price');
+
+        function updateOrderSummary() {
+            const selectedProduct = productSelect.options[productSelect.selectedIndex];
+            const selectedProductPrice = parseFloat(selectedProduct.text.split('$')[1]);
+            const quantity = quantityInput.value;
+            const size = sizeSelect.value;
+
+            coffeeNameSpan.textContent = selectedProduct.text.split(' - ')[0];
+            coffeeQuantitySpan.textContent = quantity;
+            coffeeSizeSpan.textContent = size;
+            totalPriceSpan.textContent = (selectedProductPrice * quantity).toFixed(2);
+        }
+
+        // Update order summary when selection changes
+        productSelect.addEventListener('change', updateOrderSummary);
+        quantityInput.addEventListener('input', updateOrderSummary);
+        sizeSelect.addEventListener('change', updateOrderSummary);
+
+        // Initial summary update
+        updateOrderSummary();
+    </script>
+</body>
+</html>

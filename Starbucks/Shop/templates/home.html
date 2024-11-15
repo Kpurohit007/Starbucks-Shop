@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Starbucks Coffee Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: #3e2723;
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+        }
+
+        .product {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 280px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        .product img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .product h2 {
+            font-size: 24px;
+            color: #3e2723;
+            margin: 10px 0;
+        }
+
+        .product p {
+            font-size: 16px;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .product button {
+            background-color: #3e2723;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product button:hover {
+            background-color: #5d4037;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Starbucks Coffee Shop</h1>
+    <div class="product-container">
+        {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>Price: ${{ product.price }}</p>
+                <p><strong>Size Options:</strong> {{ product.size }}</p>
+                <p><strong>Ingredients:</strong> {{ product.ingredients }}</p>
+                <p><strong>Calories:</strong> {{ product.calories }}</p>
+                <p><strong>Type:</strong> {{ product.type }}</p>
+                <a href="{% url 'order_view' %}">Order</a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
