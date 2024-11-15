@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fmou68qx+(b4%yn*h5s5g%7hmlw32)d!+)lizz5p*#e(^k%)7%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://starbucks-shop-production.up.railway.app']
 
 
 # Application definition
